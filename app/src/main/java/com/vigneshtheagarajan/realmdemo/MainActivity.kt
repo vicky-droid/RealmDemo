@@ -2,37 +2,36 @@ package com.vigneshtheagarajan.realmdemo
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.LinearLayout
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.vigneshtheagarajan.realmdemo.databinding.ActivityMainBinding
 import com.vigneshtheagarajan.realmdemo.model.Task
 import com.vigneshtheagarajan.realmdemo.ui.AddTaskFragment
 import com.vigneshtheagarajan.realmdemo.ui.adapter.TaskAdapter
 import io.realm.Realm
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     val realm = Realm.getDefaultInstance()
     val list = ArrayList<Task>()
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         listner()
         setAdapter()
     }
 
     private fun setAdapter() {
-        rv.apply {
-            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        binding.rv.apply {
             adapter = TaskAdapter(list)
         }
     }
 
     private fun listner() {
-        floatingActionButton.setOnClickListener {
+        binding.floatingActionButton.setOnClickListener {
             val fragment = AddTaskFragment()
             fragment.show(supportFragmentManager, fragment.tag)
         }
@@ -47,10 +46,6 @@ class MainActivity : AppCompatActivity() {
                 if (!list.contains(it))
                     list.add(it)
             }
-            rv.adapter?.notifyDataSetChanged()
-
         }
-
     }
-
 }
